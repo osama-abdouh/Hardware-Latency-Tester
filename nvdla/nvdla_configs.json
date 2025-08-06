@@ -1,0 +1,32 @@
+[
+  {
+    "name": "nv_small",
+    "path": "nv_small64_fp32.yaml",
+    "area": 2.824,
+    "C/mm2": 10000
+  },
+  {
+    "name": "nv_small256",
+    "path": "nv_small256_fp32.yaml",
+    "area": 3.091,
+    "C/mm2": 10000
+  },
+  {
+    "name": "nv_large",
+    "path": "nv_large2048_fp32.yaml",
+    "area": 3.809,
+    "C/mm2": 10000
+  },
+  {
+    "name": "nv_medium",
+    "path": "nv_medium512_fp16.yaml",
+    "area": 3.4,
+    "C/mm2": 10000.0
+  },
+  {
+    "name": "medium1024",
+    "path": "nv_medium1024_fp32.yaml",
+    "area": 3.5,
+    "C/mm2": 10000.0
+  }
+]
