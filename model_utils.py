@@ -19,10 +19,10 @@ import questionary
 
 
 def check_model_path(path):
-    if os.path.isfile(path):
+    if os.path.isfile(path) and path.endswith('.keras'):
         return True
     else:
-        print(colors.FAIL, f"{path}: is not a file or does not exist.", colors.ENDC)
+        print(colors.FAIL, f"{path}: is not a .keras file or does not exist.", colors.ENDC)
     
 import sys
 import os
@@ -37,9 +37,12 @@ def call_silently(func, *args, **kwargs):
         sys.stdout.close()
         sys.stdout = saved_stdout  # Restores output
 
-def load_trained_model(m_path):
-    print(f"Loading model: {os.path.basename(m_path)}")
-    flag=questionary.confirm("Want to see User params configuration and Model summary?", default=False).ask()
+def load_trained_model(m_path, show_info=None):
+    if show_info is None:
+        print(f"Loading model: {os.path.basename(m_path)}")
+        flag=questionary.confirm("Want to see User params configuration and Model summary?", default=False).ask()
+    else:
+        flag = show_info
 
     # FOLDER SECTION --------------------------------------------------------------------------------------------------------
 

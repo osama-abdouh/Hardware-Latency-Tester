@@ -8,3 +8,6 @@ problog
 numpy
 typer
 questionary
+pandas
+openpyxl
+tqdm

@@ -6,11 +6,18 @@ import questionary
 
 # create json configuration and/or 
 def load_or_create_nvdla_configs(path="nvdla/nvdla_configs.json"):
-    if not os.path.exists(path):
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    if not os.path.isfile(path):
         with open(path, 'w') as f:
             json.dump([], f, indent=4)
-    with open(path, 'r') as f:
-        return json.load(f)
+    try:
+        with open(path, 'r') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, IOError):
+        # If file is corrupted or unreadable, reset to empty list
+        with open(path, 'w') as f:
+            json.dump([], f, indent=4)
+        return []
     
 
 # list of available hardware
@@ -78,3 +85,24 @@ def add_hw_config():
     with open("nvdla/nvdla_configs.json", 'w') as f:
         json.dump(nvdla_list, f, indent=2)
     print(colors.OKGREEN,f"Added configuration: {new_config['name']}", colors.ENDC)
+
+def remove_hw_config(hw_mod):
+    # Load existing configurations
+    nvdla_list = load_or_create_nvdla_configs()
+
+    choose=questionary.checkbox("seleziona le configurazioni da eliminare:", choices=[cfg["name"] for cfg in nvdla_list]).ask()
+
+    updated_list = [cfg for cfg in nvdla_list if cfg["name"] not in choose]
+
+    #save updated configurations
+    with open("nvdla/nvdla_configs.json", "w") as f:
+        json.dump(updated_list, f, indent=4)
+
+    hw_mod.nvdla = {cfg["name"]: cfg for cfg in updated_list}
+    for hw_rm in choose:
+        print(f"Configurazione '{hw_rm}' eliminata.")
+
+    return hw_mod
+
+# Esempio d'uso:
+# remove_hw_config("nv_small256_fp32")
