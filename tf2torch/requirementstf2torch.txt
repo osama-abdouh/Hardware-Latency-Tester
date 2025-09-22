@@ -1,0 +1,8 @@
+tensorflow-macos==2.15.0
+tensorflow-metal
+torch
+tf2onnx
+onnx
+onnx2torch
+torchinfo
+numpy

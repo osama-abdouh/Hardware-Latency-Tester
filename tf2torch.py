@@ -11,9 +11,8 @@ import numpy as np
 
 import scipy.stats
 
-import sys
+model_name="best-model.keras"
 
-model_name="/Users/osamaabdouh/Desktop/NewProfiler/best-model.keras"
 tf_model = tf.keras.models.load_model(model_name)
 tf_model.save("tf_model.h5")  # Save the model in Keras format
 
@@ -28,31 +27,24 @@ torch.save(pytorch_model, "model.pth")
 loaded_model = torch.load("model.pth", weights_only=False)
 # Print the loaded model to verify
 print(torchinfo.summary(loaded_model))
+
 cfg.MODE = "fwdPass"
 cfg.NUM_CHANNELS = 2
 cfg.FRAMES = 16
 cfg.POLARITY = "both"
-try:
-    print("Caricamento del dataset...")
-    X_train, X_test, Y_train, Y_test, n_classes = gesture_data()
-    print("Dataset caricato con successo!")
-except Exception as e:
-    print(f"Errore nel caricamento del dataset: {e}")
-    import traceback
-    traceback.print_exc()
-    sys.exit(1)
+X_train, X_test, Y_train, Y_test, n_classes = gesture_data()
+
 
 def eval_net(model, X, y):
     val_outputs_list = []
     loss_fn = torch.nn.CrossEntropyLoss()
     for t in range(X.shape[1]):
-        print(f"Shape of X[:, {t}]: {X[:, t].shape}")
         val_frame_outputs = model(X[:, t])
         val_outputs_list.append(val_frame_outputs)
 
     val_outputs = torch.stack(val_outputs_list, axis=1)
     val_outputs = torch.tensor(val_outputs, dtype=torch.float32)
-    print("ok3")
+
     
     return val_outputs
 
@@ -82,6 +74,6 @@ with torch.no_grad():
     print("Y_test shape:", Y_test.shape)
     
     # If you want to compute accuracy or any other metric, you can do it here
-    acc_score = accuracy(output, Y_test)
+    accuracy = accuracy(output, Y_test)
     
-    print(f'Accuracy: {acc_score * 100:.2f}%')
+    print(f'Accuracy: {accuracy * 100:.2f}%')
