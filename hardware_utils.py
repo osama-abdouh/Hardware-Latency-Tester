@@ -18,32 +18,6 @@ def hw_visualizzer(hw_mod):
     for config_name, config in hw_mod.nvdla.items():
         print(f"- {config_name} | Path: {config['path']} | Cost: {config['cost']:.2f}")
 
-
-# display available hardware configurations
-def hw_test_all(hw_mod, model):
-    print(colors.OKBLUE, "|  ----------- HARDWARE TESTED ----------  |\n", colors.ENDC)
-    for config_name, config in hw_mod.nvdla.items():
-        latency = hw_mod.get_model_latency(model, config['path'])
-        print(f"Configuration: {config_name} | Latency: {latency/(10**9):.6f} secondi")
-    print(colors.OKBLUE, "|  ------------------------------------  |\n", colors.ENDC)
-
-
-# choose of the specific hardwares configurations to test
-def hw_choose_specific(hw_mod, model):
-    print(colors.OKGREEN, "|  ----------- CHOOSE CONFIGURATIONS TO TEST ----------  |\n", colors.ENDC)
-    hw_choose=questionary.checkbox(
-        "Select the configurations to test:", 
-        choices=hw_mod.nvdla.keys()
-    ).ask()
-
-    print(colors.OKBLUE, "|  ----------- HARDWARE TESTED ----------  |\n", colors.ENDC)
-    for hw_c in hw_choose:
-        if hw_c in hw_mod.nvdla:
-            latency = hw_mod.get_model_latency(model, hw_mod.nvdla[hw_c]['path'])
-            print(f"Configuration: {hw_c} | Latency: {latency/10**9:.6f} secondi")
-    print(colors.OKBLUE, "|  ------------------------------------  |\n", colors.ENDC)
-
-
 # Add a new configuration to the available configurations
 def add_hw_config():
     nvdla_list = load_or_create_nvdla_configs()
@@ -78,3 +52,32 @@ def add_hw_config():
     with open("nvdla/nvdla_configs.json", 'w') as f:
         json.dump(nvdla_list, f, indent=2)
     print(colors.OKGREEN,f"Added configuration: {new_config['name']}", colors.ENDC)
+
+def select_hw_config(hw_mod):
+    print(colors.OKGREEN, "|  ----------- SELECT HARDWARE CONFIGURATION ----------  |\n", colors.ENDC)
+    hw_choices = questionary.checkbox(
+        "Select the configurations to test:",
+        choices=hw_mod.nvdla.keys()
+    ).ask()
+    return hw_choices
+
+def hw_latency_test(hw_mod, model):
+    hw_choose = select_hw_config(hw_mod)
+
+    print(colors.OKBLUE, "|  ----------- HARDWARE TESTED ----------  |\n", colors.ENDC)
+    for hw_c in hw_choose:
+        if hw_c in hw_mod.nvdla:
+            latency = hw_mod.get_model_latency(model, hw_mod.nvdla[hw_c]['path'])
+            print(f"Configuration: {hw_c} | Latency: {latency/10**9:.6f} secondi")
+    print(colors.OKBLUE, "|  ------------------------------------  |\n", colors.ENDC)
+
+# display available hardware configurations
+def hw_test_all(hw_mod, model):
+    print(colors.OKBLUE, "|  ----------- HARDWARE TESTED ----------  |\n", colors.ENDC)
+    for config_name, config in hw_mod.nvdla.items():
+        latency = hw_mod.get_model_latency(model, config['path'])
+        print(f"Configuration: {config_name} | Latency: {latency/(10**9):.6f} secondi")
+    print(colors.OKBLUE, "|  ------------------------------------  |\n", colors.ENDC)
+
+# choose of the specific hardwares configurations to test
+

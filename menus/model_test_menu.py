@@ -1,6 +1,7 @@
 import questionary
+from components.colors import colors
 from model_utils import load_trained_model, check_model_path
-from hardware_utils import hw_visualizzer
+from hardware_utils import hw_choose_specific
 
 class ModelTestMenu:
 
@@ -8,9 +9,9 @@ class ModelTestMenu:
         self.hw_mod = hw_mod
 
     def display_header(self):
-        print("+-----------------------------------+")
+        print(colors.OKBLUE + "+-----------------------------------+")
         print("|         Model Test Menu           |")
-        print("+-----------------------------------+")
+        print("+-----------------------------------+" + colors.ENDC)
 
     def single_model_test(self):
         while True:
@@ -25,16 +26,12 @@ class ModelTestMenu:
                 break
 
         model=load_trained_model(model_path)
-        print("Model loaded successfully:", model)
+        print(colors.OKGREEN, "Model loaded successfully", colors.ENDC)
 
-        hw_choice = questionary.select(
-            "Want to test all Configurations:",
-            choices=[
-                "1: Hardware A",
-                "2: Hardware B",
-                "3: Hardware C"
-            ]
-        ).ask()
+        hw_choose_specific(self.hw_mod, model)
+
+    def multi_model_test(self):
+        print("Multi-model testing is not yet implemented.")
 
     def run(self):
         self.display_header()
@@ -54,10 +51,9 @@ class ModelTestMenu:
             choice_num = choice[0] if choice else ""
 
             if choice_num == "1":
-                hw_visualizzer(self)
-                print("Running Model Tests...")
+                self.single_model_test()
             elif choice_num == "2":
-                print("Displaying Test Results...")
+                self.multi_model_test()
             elif choice_num == "3":
                 break
 

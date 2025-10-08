@@ -1,7 +1,6 @@
 import questionary
-
-from modules.loss.hardware_module import hardware_module
 from components.colors import colors
+from modules.loss.hardware_module import hardware_module
 from menus.hardware_menu import HardwareMenu
 from menus.model_test_menu import ModelTestMenu
 
@@ -10,9 +9,10 @@ from menus.model_test_menu import ModelTestMenu
 
 class LatencyMenu:
     def __init__(self):
-        self.hardware_menu = HardwareMenu()
-        self.model_test_menu = ModelTestMenu()
+        #init hardware module and sub-menus
         self.hw_mod = hardware_module()
+        self.hardware_menu = HardwareMenu(self.hw_mod)
+        self.model_test_menu = ModelTestMenu(self.hw_mod)
 
     def display_header(self):
         print(colors.CYAN + "+-----------------------------------+")

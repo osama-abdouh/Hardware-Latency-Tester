@@ -3,7 +3,7 @@ import os
 import questionary
 
 from modules.loss.hardware_module import hardware_module
-from hardware_utils import hw_visualizzer, hw_test_all, hw_choose_specific, add_hw_config
+from hardware_utils import hw_visualizzer, hw_test_all, hw_test_specific, add_hw_config
 from components.colors import colors
 from model_utils import load_trained_model, check_model_path
 
@@ -43,7 +43,7 @@ while True:
     elif choice.startswith("2"):
         hw_test_all(hw_mod, model)
     elif choice.startswith("3"):
-        hw_choose_specific(hw_mod, model)
+        hw_test_specific(hw_mod, model)
     elif choice.startswith("4"):
         add_hw_config()
         hw_mod=hardware_module()
