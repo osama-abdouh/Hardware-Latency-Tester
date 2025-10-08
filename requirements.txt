@@ -13,3 +13,4 @@ tf2onnx
 onnx
 onnx2torch
 torchinfo
+tqdm
