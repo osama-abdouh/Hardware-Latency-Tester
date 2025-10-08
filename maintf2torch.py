@@ -3,9 +3,9 @@ import os
 import questionary
 
 from modules.loss.hardware_module import hardware_module
-from hardware_utils import hw_visualizzer, hw_test_all, hw_choose_specific, add_hw_config
+from utils.hardware_utils import hw_visualizzer, hw_test_all, hw_choose_specific, add_hw_config
 from components.colors import colors
-from model_utils_tf2torch import load_trained_model, check_model_path
+from utils.model_utils_tf2torch import load_trained_model, check_model_path
 
 # Ensure the custom_hardware_module is correctly imported
 hw_mod = hardware_module()

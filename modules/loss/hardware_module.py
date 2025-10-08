@@ -2,7 +2,7 @@ from modules.common_interface import common_interface
 from components.colors import colors
 import os
 
-from hardware_utils import load_or_create_nvdla_configs
+from utils.hardware_utils import load_or_create_nvdla_configs
 import flops.flops_calculator as fc
 from pathlib import Path
 from tensorflow.keras import layers, models

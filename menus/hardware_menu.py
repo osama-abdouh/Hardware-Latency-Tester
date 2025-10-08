@@ -1,7 +1,7 @@
 import questionary
 from modules.loss.hardware_module import hardware_module
 from components.colors import colors
-from hardware_utils import hw_visualizzer, add_hw_config
+from utils.hardware_utils import hw_visualizzer, add_hw_config
 
 class HardwareMenu:
     def __init__(self, hw_mod=None):
