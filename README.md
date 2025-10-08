@@ -1,12 +1,13 @@
 # Hardware-Latency-Tester
 
 ## Requisiti
-* Installare gli import presenti nel file requirments.txt
-* Inserire path del dataset in components/gesture_dataset.py
-* Inserire in gesture/dashboard/model il modello da usare di default (rinominarlo model.keras)
+* Installare le librerie presenti nel file requirments.txt
+* Inserire path del dataset in components/gesture_dataset.py ln 99
 
 ## Uso
-Per utilizzare l'API bisogna avviare il programma dal main,
-Inserire il path del modello già addestrato (se si preme invio viene usato il path di default "gesture/dashboard/model/model.keras")
+Per utilizzare l'API bisogna avviare il programma dal main.py,
 Poi seguire il menu del API.
+
+## Altro
+* per usare un modello di default cambiare il path in menus/latency_menu.py ln 47
 
