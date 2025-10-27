@@ -69,5 +69,34 @@ def select_hw_config(hw_mod):
     return hw_choices
 
 def remove_hw_config(hw_mod):
+    nvdla=load_or_create_nvdla_configs()
+    if not nvdla:
+        print(colors.FAIL, "No hardware configurations available to remove.", colors.ENDC)
+        return
     print(colors.OKGREEN, "|  ----------- DELETE HARDWARE CONFIGURATION ----------  |", colors.ENDC)
-    pass
+
+    hw_choices = select_hw_config(hw_mod)
+
+    confirm = questionary.confirm(
+        f"Are you sure you want to remove the selected configurations: {', '.join(hw_choices)}?",
+        default=False
+    ).ask()
+
+    if not confirm:
+        print(colors.FAIL, "Operation cancelled by user.", colors.ENDC)
+        return
+
+    new_list = [cfg for cfg in nvdla if cfg.get("name") not in hw_choices]
+    with open("nvdla/nvdla_configs.json", 'w') as f:
+        json.dump(new_list, f, indent=2)
+
+    if hw_mod and hasattr(hw_mod, 'nvdla'):
+        for name in hw_choices:
+            if name in hw_mod.nvdla:
+                try:
+                    del hw_mod.nvdla[name]
+                except KeyError as e:
+                    pass
+
+    print(colors.OKGREEN, f"Deleted: {', '.join(hw_choices)}", colors.ENDC)
+    return hw_choices

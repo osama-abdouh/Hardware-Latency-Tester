@@ -1,7 +1,7 @@
 import questionary
 from modules.loss.hardware_module import hardware_module
 from components.colors import colors
-from utils.hardware_utils import hw_visualizzer, add_hw_config
+from utils.hardware_utils import hw_visualizzer, add_hw_config, remove_hw_config as rm_hw_config
 
 class HardwareMenu:
     def __init__(self, hw_mod=None):
@@ -29,11 +29,17 @@ class HardwareMenu:
 
         print(colors.OKBLUE + "+----------- ADD NEW HARDWARE -----------+" + colors.ENDC)
         add_hw_config()
+
+        ## Refresh hardware module configurations
+        self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
     def remove_hardware_configuration(self):
         print(colors.OKBLUE + "+----------- REMOVE HARDWARE -----------+" + colors.ENDC)
-        # Implementation for removing hardware configuration goes here
+        removed = rm_hw_config(self.hw_mod)
+        if removed:
+            ## Refresh hardware module configurations
+            self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
     def run(self):
@@ -59,6 +65,6 @@ class HardwareMenu:
             elif choice_num == "2":
                 self.add_hardware_configuration()
             elif choice_num == "3":
-                print("Removing Hardware...")
+                self.remove_hardware_configuration()
             elif choice_num == "4":
                 break
