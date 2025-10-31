@@ -9,13 +9,12 @@ from utils.testing_utils import single_model_test, multi_model_test
 
 class TestingMenu:
     def __init__(self):
-        #init hardware module and sub-menus
         self.hw_mod = hardware_module()
         self.hardware_menu = HardwareMenu(self.hw_mod)
 
     def display_header(self):
         print(colors.CYAN + "+-----------------------------------+")
-        print("|       Latency Testing Menu        |")
+        print("|       Model Testing Menu        |")
         print("+-----------------------------------+" + colors.ENDC)
 
     def print_grouped_results(self, results):
