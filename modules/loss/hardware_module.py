@@ -48,11 +48,10 @@ class hardware_module(common_interface):
             else:
                 print(colors.FAIL, f"|  --------- {config['name']} CONFIGURATION FILE DOESN'T EXIST  -------  |\n", colors.ENDC)        
 
-        if self.nvdla == {}:
-            raise ModuleNotFoundError("No NVDLA configuration found")
         # maximum cost
         self.last_flops = 0
-        self.nvdla  = dict(sorted(self.nvdla.items(), key=lambda item: item[1]['cost'], reverse=True))
+        if self.nvdla:
+            self.nvdla  = dict(sorted(self.nvdla.items(), key=lambda item: item[1]['cost'], reverse=True))
 
     def update_state(self, *args):
         # import current model reference

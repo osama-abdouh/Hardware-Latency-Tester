@@ -2,7 +2,6 @@ import questionary
 
 class ConversionMenu:
     def __init__(self):
-        print("Conversion Menu Initialized")
         pass
 
     def run(self):

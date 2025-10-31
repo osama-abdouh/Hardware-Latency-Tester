@@ -7,7 +7,7 @@ from utils.hardware_utils import select_hw_config
 from utils.model_utils import check_if_path_is_model
 from utils.testing_utils import single_model_test, multi_model_test
 
-class LatencyMenu:
+class TestingMenu:
     def __init__(self):
         #init hardware module and sub-menus
         self.hw_mod = hardware_module()
@@ -38,6 +38,8 @@ class LatencyMenu:
 
     def test_hw_latency(self):
         hw_choose = select_hw_config(self.hw_mod)
+        if not hw_choose:
+            return  # Exit if no hardware configuration is available
 
         results = None
         while True:
@@ -64,10 +66,18 @@ class LatencyMenu:
             print(colors.FAIL, "No results returned from model test.", colors.ENDC)
             return
         self.print_grouped_results(results)
+        while True:
+            confirm = questionary.confirm("Press enter to return to the Latency Menu.").ask()
+            if confirm:
+                break
 
     def run(self):
-        self.display_header()
-        while True: 
+        while True:
+            if not self.hw_mod:
+                print(colors.FAIL, "No hardware configurations available. Please manage hardware first.", colors.ENDC)
+                self.hardware_menu = HardwareMenu(self.hw_mod)  
+                
+            self.display_header()
             choice = questionary.select(
                 "Select an option:",
                 choices=[
@@ -84,8 +94,9 @@ class LatencyMenu:
 
             if choice_num == "1":
                 self.hardware_menu.run()
-                self.hardware_menu.hw_mod = self.hw_mod
+                self.hw_mod = self.hardware_menu.hw_mod
             elif choice_num == "2":
+                os.system('cls' if os.name == 'nt' else 'clear')
                 self.test_hw_latency()
             elif choice_num == "3":
                 break

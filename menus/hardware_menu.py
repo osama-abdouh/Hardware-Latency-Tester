@@ -1,50 +1,51 @@
 import questionary
+import os
 from modules.loss.hardware_module import hardware_module
 from components.colors import colors
 from utils.hardware_utils import hw_visualizzer, add_hw_config, remove_hw_config as rm_hw_config
 
 class HardwareMenu:
     def __init__(self, hw_mod=None):
-        self.hw_mod = hw_mod if hw_mod else hardware_module()
-        pass
+        if hw_mod:
+            self.hw_mod = hw_mod
+        else:
+            self.hw_mod = hardware_module()
 
     def display_header(self):
-        print(colors.CYAN + "+-----------------------------------+")
+        print(colors.HEADER + "+-----------------------------------+")
         print("|       Hardware Management Menu    |")
         print("+-----------------------------------+" + colors.ENDC)
     
     def view_hardware_configurations(self):
-        if not self.hw_mod:
-            print(colors.FAIL + "Hardware module not initialized!" + colors.ENDC)
+        if not self.hw_mod or not self.hw_mod.nvdla:
+            print(colors.WARNING + "No hardware configurations found." + colors.ENDC)
             return
-            
+        
         print(colors.OKBLUE + "+----------- AVAILABLE HARDWARE -----------+" + colors.ENDC)  
         hw_visualizzer(self.hw_mod)
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
     def add_hardware_configuration(self):
-        if not self.hw_mod:
-            print(colors.FAIL + "Hardware module not initialized!" + colors.ENDC)
-            return
-
         print(colors.OKBLUE + "+----------- ADD NEW HARDWARE -----------+" + colors.ENDC)
         add_hw_config()
-
-        ## Refresh hardware module configurations
+        # Refresh hardware module configurations
         self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
     def remove_hardware_configuration(self):
+        if not self.hw_mod or not self.hw_mod.nvdla:
+            print(colors.FAIL + "No hardware configurations available to remove." + colors.ENDC)
+            return
         print(colors.OKBLUE + "+----------- REMOVE HARDWARE -----------+" + colors.ENDC)
         removed = rm_hw_config(self.hw_mod)
         if removed:
-            ## Refresh hardware module configurations
+            # Refresh hardware module configurations
             self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
     def run(self):
-        self.display_header()
         while True:
+            self.display_header()
             choice = questionary.select(
                 "Select an option:",
                 choices=[

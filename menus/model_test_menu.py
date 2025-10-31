@@ -1,8 +1,8 @@
 import questionary
 import os
 from components.colors import colors
-from utils.model_utils import load_trained_model
-from utils.hardware_utils import select_hw_config, hw_test
+from utils.model_utils import load_trained_model, check_if_path_is_model
+from utils.hardware_utils import select_hw_config
 from tqdm import tqdm
 
 
@@ -73,7 +73,7 @@ class ModelTestMenu:
         with tqdm(total=len(model_files), desc="Testing models", unit="model") as pbar:
             for file in model_files:
                 relative_path = os.path.relpath(file, models_path)
-                if check_model_path(file):
+                if check_if_path_is_model(file):
                     model = load_trained_model(file, show_info=False)
                     for hw_c in hw_choose:
                         if hw_c in self.hw_mod.nvdla:
@@ -108,7 +108,7 @@ class ModelTestMenu:
         for file in model_files:
             relative_path = os.path.relpath(file, models_path)
             print(colors.MAGENTA, f"Testing model: {relative_path}\n", colors.ENDC)
-            if check_model_path(file):
+            if check_if_path_is_model(file):
                 model = load_trained_model(file, False)
                 hw_test(self.hw_mod, model, hw_choose)
         print(colors.OKGREEN, "|  --------------------------------------------------  |\n", colors.ENDC)

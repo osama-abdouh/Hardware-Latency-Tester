@@ -2,7 +2,6 @@ import questionary
 
 class TrainingMenu:
     def __init__(self):
-        print("Training Menu Initialized")
         pass
 
     def run(self):
