@@ -18,8 +18,8 @@ class ConversionMenu:
         while True:
             model = questionary.path("Enter the path of the TensorFlow model:").ask()
             model = os.path.abspath(os.path.expanduser(model))
-            if not model or not os.path.exists(model):
-                print("Invalid model path provided.")
+            if not model or not os.path.exists(model) or not os.path.isfile(model) or not model.endswith(('.keras')):
+                print("Invalid model path provided. File must exist and be a .keras file.")
             break
 
         while True:
@@ -101,7 +101,7 @@ class ConversionMenu:
             choice = questionary.select(
                 "Model Conversion Menu - Select an option:",
                 choices=[
-                    "1: TensorFlow -> PyTorch",
+                    "1: .keras -> .pt (TensorFlow to PyTorch)",
                     "2: Back to Main Menu"
                 ]
             ).ask()
