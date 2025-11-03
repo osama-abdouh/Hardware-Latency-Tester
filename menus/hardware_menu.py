@@ -12,6 +12,7 @@ class HardwareMenu:
             self.hw_mod = hardware_module()
 
     def display_header(self):
+        os.system('clear' if os.name == 'posix' else 'cls')
         print(colors.HEADER + "+-----------------------------------+")
         print("|       Hardware Management Menu    |")
         print("+-----------------------------------+" + colors.ENDC)
@@ -25,12 +26,16 @@ class HardwareMenu:
         hw_visualizzer(self.hw_mod)
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
 
+        questionary.press_any_key_to_continue().ask()
+
     def add_hardware_configuration(self):
         print(colors.OKBLUE + "+----------- ADD NEW HARDWARE -----------+" + colors.ENDC)
         add_hw_config()
         # Refresh hardware module configurations
         self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
+        questionary.press_any_key_to_continue().ask()
+
 
     def remove_hardware_configuration(self):
         if not self.hw_mod or not self.hw_mod.nvdla:
@@ -42,6 +47,7 @@ class HardwareMenu:
             # Refresh hardware module configurations
             self.hw_mod = hardware_module()
         print(colors.OKBLUE + "+------------------------------------------+" + colors.ENDC)
+        questionary.press_any_key_to_continue().ask()
 
     def run(self):
         while True:

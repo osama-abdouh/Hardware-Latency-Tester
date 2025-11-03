@@ -16,20 +16,7 @@ warnings.filterwarnings('ignore', category=DeprecationWarning)
 tf.get_logger().setLevel('ERROR')
 
 from flops.flops_calculator import analyze_model
-from utils.model_utils import check_if_path_is_model
-
-def load_model_from_path(model_path):
-    """
-    Load a TensorFlow Keras model from the given path.
-    :param model_path: Path to the .keras model file
-    :return: Loaded Keras model
-    """
-    try:
-        model = keras.models.load_model(model_path)
-        return model
-    except Exception as e:
-        print(colors.FAIL, f"Error loading model from {model_path}: {e}", colors.ENDC)
-        return None
+from utils.model_utils import check_if_path_is_model, load_model_simple
 
 def calculate_model_flops(model_path):
     """
@@ -38,7 +25,7 @@ def calculate_model_flops(model_path):
     :return: Total FLOPs and detailed FLOPs dictionary
     """
 
-    model = load_model_from_path(model_path)
+    model = load_model_simple(model_path)
     if model is None:
         return None
     

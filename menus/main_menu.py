@@ -13,6 +13,7 @@ class MainMenu:
         self.training_menu = TrainingMenu()
 
     def display_header(self):
+        os.system('clear' if os.name == 'posix' else 'cls')
         print(colors.HEADER + "+-----------------------------------+")
         print("|            ModelBench             |")
         print("+-----------------------------------+" + colors.ENDC)

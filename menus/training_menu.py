@@ -1,4 +1,5 @@
 import questionary
+import os
 
 class TrainingMenu:
     def __init__(self):
@@ -6,6 +7,7 @@ class TrainingMenu:
 
     def run(self):
         while True:
+            os.system('clear' if os.name == 'posix' else 'cls')
             choice = questionary.select(
                 "Training Menu - Select an option:",
                 choices=[

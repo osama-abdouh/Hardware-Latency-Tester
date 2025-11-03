@@ -95,9 +95,12 @@ class ConversionMenu:
             if confirm:
                 print("\nModel Summary:")
                 print(torchinfo.summary(loaded_model, verbose=0))
+            
+            questionary.press_any_key_to_continue().ask()
 
     def run(self):
         while True:
+            os.system('clear' if os.name == 'posix' else 'cls')
             choice = questionary.select(
                 "Model Conversion Menu - Select an option:",
                 choices=[

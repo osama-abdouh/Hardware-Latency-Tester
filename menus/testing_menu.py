@@ -7,6 +7,7 @@ from utils.hardware_utils import select_hw_config
 from utils.model_utils import check_if_path_is_model
 from utils.testing_utils import single_model_test, multi_model_test
 from utils.flops_utils import calculate_model_flops, calculate_multiple_models_flops
+from utils.export_utils import export_latency_results, export_flops_results
 
 class TestingMenu:
     def __init__(self):
@@ -14,6 +15,7 @@ class TestingMenu:
         self.hardware_menu = HardwareMenu(self.hw_mod)
 
     def display_header(self):
+        os.system('clear' if os.name == 'posix' else 'cls')
         print(colors.CYAN + "+-----------------------------------+")
         print("|        Model Testing Menu         |")
         print("+-----------------------------------+" + colors.ENDC)
@@ -94,7 +96,15 @@ class TestingMenu:
             return
         #display grouped results
         self.print_grouped_results(results)
-        questionary.confirm("Press enter to return to the Testing Menu.").ask()
+
+        export_choice = questionary.confirm(
+            "Do you want to export the latency results to a CSV file?",
+            default=True
+        ).ask()
+        if export_choice:
+            export_latency_results(results)
+
+        questionary.press_any_key_to_continue().ask()
 
     def test_model_flops(self):
         """Test FLOPs for single or multiple models"""
@@ -151,8 +161,15 @@ class TestingMenu:
             if show_details and results[0].get('details'):
                 print("\n" + colors.CYAN + "Detailed Operations:" + colors.ENDC)
                 print(results[0]['details'])
-        
-        questionary.confirm("Press enter to return to the Testing Menu.").ask()
+
+        export_choice = questionary.confirm(
+            "Do you want to export the FLOPs results to a CSV file?",
+            default=True
+        ).ask()
+        if export_choice:
+            export_flops_results(results)
+
+        questionary.press_any_key_to_continue().ask()
 
 
     def run(self):

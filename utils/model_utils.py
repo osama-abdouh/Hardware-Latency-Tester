@@ -34,6 +34,15 @@ def call_silently(func, *args, **kwargs):
         sys.stdout.close()
         sys.stdout = saved_stdout  # Restores output
 
+def load_model_simple(model_path):
+    """Load model for analysis (no dataset, no folders)"""
+    try:
+        model = load_model(model_path, compile=False)
+        return model
+    except Exception as e:
+        print(colors.FAIL, f"Error loading model from {model_path}: {e}", colors.ENDC)
+        return None
+
 def load_trained_model(m_path, show_info=None):
     if show_info is None:
         show_info = questionary.confirm("Want to see User params configuration and Model summary?", default=False).ask()
