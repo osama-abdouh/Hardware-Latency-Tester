@@ -6,5 +6,6 @@ __pycache__/
 # VSCode settings
 .vscode/
 
+results/
 
 .todo.md
